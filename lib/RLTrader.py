@@ -71,7 +71,25 @@ class RLTrader:
                 self.input_data_path = os.path.realpath(os.path.join(class_dir, "../{}".format(self.input_data_path)))
 
             data_columns = {'Date': 'Date', 'Open': 'Open', 'High': 'High',
-                            'Low': 'Low', 'Close': 'Close', 'Volume': 'VolumeFrom'}
+                            'Low': 'Low', 'Close': 'Close', 'Volume': 'VolumeFrom',
+
+                            'RSI':'RSI',
+                            'MFI':'MFI',
+                            'ADX': 'ADX',
+                            'macd': 'macd',
+                            'macd_signal': 'macd_signal',
+                            'macd_hist': 'macd_hist',
+                            'aroon_up': 'aroon_up',
+                            'aroon_down': 'aroon_down',
+                            'trix': 'trix',
+                            'uo': 'uo',
+                            'wbb_upper': 'wbb_upper',
+                            'wbb_lower': 'wbb_lower',
+                            'wbb_mid': 'wbb_mid',
+                            'chaikin_line': 'chaikin_line',
+                            'chaikin_osc': 'chaikin_osc',
+                            'obv': 'obv'
+                            }
 
             self.data_provider = StaticDataProvider(date_format=self.date_format,
                                                     csv_data_path=self.input_data_path,
@@ -187,7 +205,7 @@ class RLTrader:
 
     def optimize(self, n_trials: int = 20):
         try:
-            self.optuna_study.optimize(self.optimize_params, n_trials=n_trials, n_jobs=1)
+            self.optuna_study.optimize(self.optimize_params, n_trials=n_trials, n_jobs=-1)
         except KeyboardInterrupt:
             pass
 

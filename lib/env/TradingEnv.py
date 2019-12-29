@@ -162,6 +162,7 @@ class TradingEnv(gym.Env):
 
     def _next_observation(self):
         self.current_ohlcv = self.data_provider.next_ohlcv()
+
         self.timestamps.append(pd.to_datetime(self.current_ohlcv.Date.item(), unit='s'))
         self.observations = self.observations.append(self.current_ohlcv, ignore_index=True)
 
