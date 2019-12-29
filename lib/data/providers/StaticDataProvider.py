@@ -23,6 +23,7 @@ class StaticDataProvider(BaseDataProvider):
                     'Invalid "csv_data_path" argument passed to StaticDataProvider, file could not be found.')
 
             self.data_frame = pd.read_csv(csv_data_path)
+            self.data_frame = add_indicators(self.data_frame.reset_index())
         else:
             raise ValueError(
                 'StaticDataProvider requires either a "data_frame" or "csv_data_path argument".')
@@ -30,7 +31,6 @@ class StaticDataProvider(BaseDataProvider):
         if not skip_prepare_data:
             self.data_frame = self.prepare_data(self.data_frame)
 
-        self.data_frame = add_indicators(self.data_frame.reset_index())
 
     @staticmethod
     def from_prepared(data_frame: pd.DataFrame, date_format: ProviderDateFormat, **kwargs):
