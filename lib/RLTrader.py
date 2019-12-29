@@ -205,7 +205,7 @@ class RLTrader:
 
     def optimize(self, n_trials: int = 20):
         try:
-            self.optuna_study.optimize(self.optimize_params, n_trials=n_trials, n_jobs=-1)
+            self.optuna_study.optimize(self.optimize_params, n_trials=n_trials, n_jobs=1)
         except KeyboardInterrupt:
             pass
 
