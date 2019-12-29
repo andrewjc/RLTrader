@@ -5,10 +5,9 @@ matplotlib
 gym
 stable_baselines
 optuna
-ta
+TA-Lib==0.4.17
 statsmodels==0.10.0rc2
 empyrical
 ccxt
-psycopg2
 configparser
 quantstats>=0.0.17

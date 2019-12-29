@@ -4,7 +4,7 @@ import os
 from typing import Tuple
 from lib.data.providers.dates import ProviderDateFormat
 from lib.data.providers import BaseDataProvider
-
+from lib.data.features.indicators import add_indicators
 
 class StaticDataProvider(BaseDataProvider):
     _current_index = 0
@@ -29,6 +29,8 @@ class StaticDataProvider(BaseDataProvider):
 
         if not skip_prepare_data:
             self.data_frame = self.prepare_data(self.data_frame)
+
+        self.data_frame = add_indicators(self.data_frame.reset_index())
 
     @staticmethod
     def from_prepared(data_frame: pd.DataFrame, date_format: ProviderDateFormat, **kwargs):

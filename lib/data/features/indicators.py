@@ -1,56 +1,33 @@
-import ta
-import pandas as pd
+import talib as ta
 
+def add_indicators(df):
+    df['RSI'] = ta.RSI(df['close'])
+    df['MFI'] = ta.MFI(df['high'], df['low'], df['close'], df['volume'])
+    df['ADX'] = ta.ADX(df['high'], df['low'], df['close'])
 
-diff = lambda x, y: x - y
-abs_diff = lambda x, y: abs(x - y)
+    macd, macdsignal, macdhist = ta.MACD(df['close'])
+    df['macd'] = macd
+    df['macd_signal'] = macdsignal
+    df['macd_hist'] = macdhist
 
+    aroondown, aroonup = ta.AROON(df['high'], df['low'])
+    df['aroon_up'] = aroonup
+    df['aroon_down'] = aroondown
 
-indicators = [
-    ('RSI', ta.rsi, ['Close']),
-    ('MFI', ta.money_flow_index, ['High', 'Low', 'Close', 'Volume BTC']),
-    ('TSI', ta.tsi, ['Close']),
-    ('UO', ta.uo, ['High', 'Low', 'Close']),
-    ('AO', ta.ao, ['High', 'Close']),
-    ('MACDDI', ta.macd_diff, ['Close']),
-    ('VIP', ta.vortex_indicator_pos, ['High', 'Low', 'Close']),
-    ('VIN', ta.vortex_indicator_neg, ['High', 'Low', 'Close']),
-    ('VIDIF', abs_diff, ['VIP', 'VIN']),
-    ('TRIX', ta.trix, ['Close']),
-    ('MI', ta.mass_index, ['High', 'Low']),
-    ('CCI', ta.cci, ['High', 'Low', 'Close']),
-    ('DPO', ta.dpo, ['Close']),
-    ('KST', ta.kst, ['Close']),
-    ('KSTS', ta.kst_sig, ['Close']),
-    ('KSTDI', diff, ['KST', 'KSTS']),
-    ('ARU', ta.aroon_up, ['Close']),
-    ('ARD', ta.aroon_down, ['Close']),
-    ('ARI', diff, ['ARU', 'ARD']),
-    ('BBH', ta.bollinger_hband, ['Close']),
-    ('BBL', ta.bollinger_lband, ['Close']),
-    ('BBM', ta.bollinger_mavg, ['Close']),
-    ('BBHI', ta.bollinger_hband_indicator, ['Close']),
-    ('BBLI', ta.bollinger_lband_indicator, ['Close']),
-    ('KCHI', ta.keltner_channel_hband_indicator, ['High', 'Low', 'Close']),
-    ('KCLI', ta.keltner_channel_lband_indicator, ['High', 'Low', 'Close']),
-    ('DCHI', ta.donchian_channel_hband_indicator, ['Close']),
-    ('DCLI', ta.donchian_channel_lband_indicator, ['Close']),
-    ('ADI', ta.acc_dist_index, ['High', 'Low', 'Close', 'Volume BTC']),
-    ('OBV', ta.on_balance_volume, ['Close', 'Volume BTC']),
-    ('CMF', ta.chaikin_money_flow, ['High', 'Low', 'Close', 'Volume BTC']),
-    ('FI', ta.force_index, ['Close', 'Volume BTC']),
-    ('EM', ta.ease_of_movement, ['High', 'Low', 'Close', 'Volume BTC']),
-    ('VPT', ta.volume_price_trend, ['Close', 'Volume BTC']),
-    ('NVI', ta.negative_volume_index, ['Close', 'Volume BTC']),
-    ('DR', ta.daily_return, ['Close']),
-    ('DLR', ta.daily_log_return, ['Close'])
-]
+    df['trix'] = ta.TRIX(df['close'])
 
+    df['uo'] = ta.ULTOSC(df['high'], df['low'], df['close'])
 
-def add_indicators(df) -> pd.DataFrame:
-    for name, f, arg_names in indicators:
-        wrapper = lambda func, args: func(*args)
-        args = [df[arg_name] for arg_name in arg_names]
-        df[name] = wrapper(f, args)
+    upperband, middleband, lowerband = ta.BBANDS(df['close'])
+
+    df['wbb_upper'] = upperband
+    df['wbb_lower'] = lowerband
+    df['wbb_mid'] = middleband
+
+    df['chaikin_line'] = ta.AD(df['high'], df['low'], df['close'], df['volume'])
+    df['chaikin_osc'] = ta.ADOSC(df['high'], df['low'], df['close'], df['volume'])
+    df['obv'] = ta.OBV(df['close'], df['volume'])
+
     df.fillna(method='bfill', inplace=True)
+
     return df
