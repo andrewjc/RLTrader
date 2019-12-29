@@ -2,7 +2,7 @@ import talib as ta
 
 def add_indicators(df):
     df['RSI'] = ta.RSI(df['Close'])
-    df['MFI'] = ta.MFI(df['High'], df['Low'], df['Close'], df['Volume'])
+    df['MFI'] = ta.MFI(df['High'], df['Low'], df['Close'], df['VolumeFrom'])
     df['ADX'] = ta.ADX(df['High'], df['Low'], df['Close'])
 
     macd, macdsignal, macdhist = ta.MACD(df['Close'])
@@ -24,9 +24,9 @@ def add_indicators(df):
     df['wbb_lower'] = lowerband
     df['wbb_mid'] = middleband
 
-    df['chaikin_line'] = ta.AD(df['High'], df['Low'], df['Close'], df['Volume'])
-    df['chaikin_osc'] = ta.ADOSC(df['High'], df['Low'], df['Close'], df['Volume'])
-    df['obv'] = ta.OBV(df['Close'], df['Volume'])
+    df['chaikin_line'] = ta.AD(df['High'], df['Low'], df['Close'], df['VolumeFrom'])
+    df['chaikin_osc'] = ta.ADOSC(df['High'], df['Low'], df['Close'], df['VolumeFrom'])
+    df['obv'] = ta.OBV(df['Close'], df['VolumeFrom'])
 
     df.fillna(method='bfill', inplace=True)
 
